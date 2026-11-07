@@ -1,0 +1,15 @@
+# Secrets and local-only settings — never commit
+.env
+.env.*
+*.pem
+*.key
+.claude/settings.local.json
+
+# n8n local data (contains encrypted credentials and execution history)
+.n8n/
+*.sqlite
+
+# Tooling
+node_modules/
+.DS_Store
+Thumbs.db
