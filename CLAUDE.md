@@ -7,8 +7,11 @@ This project builds n8n workflows with Claude Code.
 - **n8n-mcp MCP server** (configured in `.mcp.json`; needs a one-time `npm install -g n8n-mcp`): node docs, templates, and validation.
   It runs from the global install because `npx` startup is too slow for Claude Code's 30-second MCP timeout.
   It has 7 tools by default (`search_nodes`, `get_node`, `validate_node`, `validate_workflow`, `search_templates`, `get_template`, `tools_documentation`).
-  The `n8n_*` management tools (create/update/test workflows on a live instance) turn on when you set the
-  `N8N_API_URL` and `N8N_API_KEY` environment variables before you start Claude.
+  The `n8n_*` management tools turn on when `N8N_API_URL` and `N8N_API_KEY` are set. They are NOT used here:
+  the n8n public API isn't available on the n8n Cloud free trial.
+- **Deploying:** use the claude.ai **n8n connector** (`mcp__claude_ai_n8n__*`: `create_workflow_from_code`,
+  `validate_workflow`, `publish_workflow`, `execute_workflow`, ...). It is n8n's official instance-level MCP and is
+  connected to https://swaiganjo.app.n8n.cloud. Build and validate with n8n-mcp + skills, then deploy through the connector.
 - **n8n-skills** (`.claude/skills/`, from github.com/czlonkowski/n8n-skills): 15 skills, with `using-n8n-mcp-skills` as the entry point.
 - **Hooks** (`.claude/settings.json` → `.claude/hooks/`): load the entry-point skill at session start and add reminders before
   `get_node`, create/update/validate/test workflow calls. They need `jq` on PATH.
