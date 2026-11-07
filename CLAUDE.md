@@ -4,7 +4,8 @@ This project builds n8n workflows with Claude Code.
 
 ## Tooling in this project
 
-- **n8n-mcp MCP server** (configured in `.mcp.json`, runs locally via `npx n8n-mcp@latest`): node docs, templates, and validation.
+- **n8n-mcp MCP server** (configured in `.mcp.json`; needs a one-time `npm install -g n8n-mcp`): node docs, templates, and validation.
+  It runs from the global install because `npx` startup is too slow for Claude Code's 30-second MCP timeout.
   It has 7 tools by default (`search_nodes`, `get_node`, `validate_node`, `validate_workflow`, `search_templates`, `get_template`, `tools_documentation`).
   The `n8n_*` management tools (create/update/test workflows on a live instance) turn on when you set the
   `N8N_API_URL` and `N8N_API_KEY` environment variables before you start Claude.
@@ -22,4 +23,4 @@ This project builds n8n workflows with Claude Code.
 ## Updating
 
 - Skills: re-clone the n8n-skills repo and copy `skills/*` into `.claude/skills/` and `hooks/*` into `.claude/hooks/`.
-- MCP server: `@latest` gets the newest version each time the server starts.
+- MCP server: `npm install -g n8n-mcp@latest`, then restart Claude Code.
