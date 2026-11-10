@@ -24,3 +24,30 @@ on conflict do nothing;
 --   insert into intake.notification_routes (event_type, channel, target) values ('DOWNSTREAM_DISPATCH', 'webhook', 'https://hooks.zapier.com/hooks/catch/...');
 -- Pause a route without deleting it:
 --   update intake.notification_routes set enabled = false where id = '<route id>';
+
+-- Google Chat space (incoming webhook URL) / Teams channel via a Teams "Workflows" webhook URL:
+--   insert into intake.notification_routes (event_type, channel, target) values ('REVIEW_REQUEST', 'google_chat', 'https://chat.googleapis.com/v1/spaces/.../messages?key=...');
+--   insert into intake.notification_routes (event_type, channel, target) values ('INCIDENT_ALERT', 'teams', 'https://<tenant>.webhook.office.com/...');
+
+-- ---------------------------------------------------------------------------
+-- CRM / ticketing (one enabled row per event + system). The ticket is created when a request clears
+-- the gate, and later events (escalation, decision) update the same ticket.
+-- ---------------------------------------------------------------------------
+-- insert into intake.ticket_routes (event_type, system, config) values
+--   ('TICKET_CREATE', 'jira',       '{"project_key":"OPS","issue_type":"Task"}'),
+--   ('TICKET_UPDATE', 'jira',       '{"project_key":"OPS"}');
+-- Zendesk:    ('TICKET_CREATE', 'zendesk',    '{"tags":["ops-intake"]}')
+-- HubSpot:    ('TICKET_CREATE', 'hubspot',    '{"pipeline":"0","stage":"1"}')
+-- Salesforce: ('TICKET_CREATE', 'salesforce', '{"origin":"Ops Intake"}')
+-- Anything else (ServiceNow, Freshdesk, Monday, ClickUp, Zapier, Make):
+--             ('TICKET_CREATE', 'webhook',    '{"url":"https://..."}')
+
+-- ---------------------------------------------------------------------------
+-- Document storage (exactly one enabled target). Files never go into Postgres; only the link,
+-- checksum and safe file name are kept in the audit record.
+-- ---------------------------------------------------------------------------
+-- insert into intake.storage_targets (provider, config) values ('gdrive', '{"folder_id":"<private folder id>"}');
+-- SharePoint: ('sharepoint', '{"site_id":"...","drive_id":"...","folder_id":"..."}')
+-- OneDrive:   ('onedrive',   '{"folder_id":"..."}')
+-- AWS S3:     ('s3',         '{"bucket":"client-ops-intake","prefix":"attachments/","region":"eu-west-1"}')
+-- Optional external malware scan before upload: add "scan_url":"https://..." to the config.
