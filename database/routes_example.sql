@@ -18,8 +18,6 @@ on conflict do nothing;
 --   update intake.notification_routes set channel = 'outlook' where channel = 'gmail';
 -- Slack for incidents as well as email:
 --   insert into intake.notification_routes (event_type, channel, target) values ('INCIDENT_ALERT', 'slack', '#ops-incidents');
--- Microsoft Teams channel:
---   insert into intake.notification_routes (event_type, channel, target) values ('INCIDENT_ALERT', 'teams', '<teamId>/<channelId>');
 -- Open a ticket in Jira / ServiceNow / Zendesk via Zapier, Make or a native inbound webhook (HMAC-signed JSON):
 --   insert into intake.notification_routes (event_type, channel, target) values ('DOWNSTREAM_DISPATCH', 'webhook', 'https://hooks.zapier.com/hooks/catch/...');
 -- Pause a route without deleting it:
